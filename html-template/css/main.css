@@ -119,6 +119,8 @@ body {
 
 .message-text>.container>.text {
     white-space: pre-wrap;
+    word-break: normal;
+    overflow-wrap: anywhere;
     margin-bottom: 0;
 }
 
