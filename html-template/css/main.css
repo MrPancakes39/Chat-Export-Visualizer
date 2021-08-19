@@ -189,3 +189,26 @@ body {
 .chat_foot>.text-field::placeholder {
     color: #999999;
 }
+
+@keyframes rotate_loader {
+    to {
+        transform: rotate(1turn)
+    }
+}
+
+#loader>.center {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#loader>.center>.circle {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    border: 5px solid rgba(189, 189, 189, 0.25);
+    border-left-color: rgba(3, 155, 229, 1);
+    border-top-color: rgba(3, 155, 229, 1);
+    animation: rotate_loader 600ms infinite linear;
+}

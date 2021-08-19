@@ -32,14 +32,27 @@
 <body>
     <main class="chat">
         <header class="chat_head u-full-width">
-            <img class="profile" src="placeholder">
+            <!-- Person or Group Icon SVG -->
+            <svg class="profile" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 212 212" width="212" height="212">
+            </svg>
             <h5 class="title">placeholder</h5>
         </header>
+        <section id="loader" class="u-full-width">
+            <div class="center">
+                <div class="circle"></div>
+            </div>
+        </section>
         <div id="messages" class="u-full-width"></div>
         <footer class="chat_foot u-full-width">
-            <img src="./assets/emoji-icon.svg">
+            <!-- Emoji Icon SVG -->
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                <path fill="#919191" d="M9.153 11.603c.795 0 1.439-.879 1.439-1.962s-.644-1.962-1.439-1.962-1.439.879-1.439 1.962.644 1.962 1.439 1.962zm-3.204 1.362c-.026-.307-.131 5.218 6.063 5.551 6.066-.25 6.066-5.551 6.066-5.551-6.078 1.416-12.129 0-12.129 0zm11.363 1.108s-.669 1.959-5.051 1.959c-3.505 0-5.388-1.164-5.607-1.959 0 0 5.912 1.055 10.658 0zM11.804 1.011C5.609 1.011.978 6.033.978 12.228s4.826 10.761 11.021 10.761S23.02 18.423 23.02 12.228c.001-6.195-5.021-11.217-11.216-11.217zM12 21.354c-5.273 0-9.381-3.886-9.381-9.159s3.942-9.548 9.215-9.548 9.548 4.275 9.548 9.548c-.001 5.272-4.109 9.159-9.382 9.159zm3.108-9.751c.795 0 1.439-.879 1.439-1.962s-.644-1.962-1.439-1.962-1.439.879-1.439 1.962.644 1.962 1.439 1.962z"></path>
+            </svg>
             <input class="text-field" type="text" placeholder="Type a message">
-            <img src="./assets/send-icon.svg">
+            <!-- Send Icon SVG -->
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                <path fill="#919191" d="M1.101 21.757L23.8 12.028 1.101 2.3l.011 7.912 13.623 1.816-13.623 1.817-.011 7.912z"></path>
+            </svg>
         </footer>
     </main>
 

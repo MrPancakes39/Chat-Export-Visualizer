@@ -6,10 +6,12 @@
   "scripts": {
     "start": "node index.js"
   },
+  "keywords": [],
   "author": "Salman Hasan",
   "license": "MIT",
   "private": false,
   "dependencies": {
+    "lodash.chunk": "^4.2.0",
     "whatsapp-chat-parser": "^3.2.1"
   }
 }
