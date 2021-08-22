@@ -33,9 +33,28 @@
     <main class="chat">
         <header class="chat_head u-full-width">
             <!-- Person or Group Icon SVG -->
-            <svg class="profile" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 212 212" width="212" height="212">
-            </svg>
+            <svg class="profile" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 212 212" width="212" height="212"></svg>
             <h5 class="title">placeholder</h5>
+            <div class="arrows">
+                <svg id="arrow-back" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24px" height="24px" fill="#787878">
+                    <path d="M 10.783791,4 C 11.792824,2.9791383 13.105181,4.4623413 12.193791,5.41 L 6.6137906,11 H 18.783791 C 19.809295,10.893741 19.907348,12.973279 18.783791,13 H 6.6137906 L 12.193791,18.59 C 12.905186,19.346452 11.714871,20.827908 10.783791,20 L 3.9384216,13.154631 C 3.4715326,12.669954 2.7170866,12.184061 3.6072786,11.176512 Z" id="path4" />
+                </svg>
+                <svg id="arrow-forward" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24px" height="24px" fill="#787878">
+                    <path d="M 12,4 C 10.990967,2.9791383 9.6786095,4.4623413 10.59,5.41 L 16.17,11 H 4 C 2.9744957,10.893741 2.8764422,12.973279 4,13 H 16.17 L 10.59,18.59 C 9.8786045,19.346452 11.06892,20.827908 12,20 L 18.845369,13.154631 C 19.312258,12.669954 20.066704,12.184061 19.176512,11.176512 Z" id="path4" />
+                </svg>
+            </div>
+            <svg id="options" viewBox="0 0 24 24" width="24" height="24" class="">
+                <path fill="#787878" d="M12 7a2 2 0 1 0-.001-4.001A2 2 0 0 0 12 7zm0 2a2 2 0 1 0-.001 3.999A2 2 0 0 0 12 9zm0 6a2 2 0 1 0-.001 3.999A2 2 0 0 0 12 15z"></path>
+            </svg>
+            <div class="options_menu hide">
+                <ul>
+                    <li>Goto First Page</li>
+                    <li>Goto Last Page</li>
+                </ul>
+            </div>
+            <div class="pages">
+                <p>Page: 0/0</p>
+            </div>
         </header>
         <section id="loader" class="u-full-width">
             <div class="center">

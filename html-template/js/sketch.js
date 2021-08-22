@@ -130,17 +130,17 @@ function createDateMsg(msgObj) {
 
 function genMsg() {
     currentDate = nextDate = "";
-    let lastIndex = data.length - 1;
+    let lastIndex = data[page].length - 1;
     messageContainer.innerHTML = "";
     msg_con_html = ""
     for (let i = 0; i <= lastIndex; i++) {
         // Creates message-row div.
-        let div = createMsg(data[i]);
+        let div = createMsg(data[page][i]);
 
         // Sets style for you-message div.
-        if (i > 0 && i != lastIndex && typeOfMsg(data[i]) == "you-message") {
-            let typeBefore = typeOfMsg(data[i - 1]);
-            let typeAfter = typeOfMsg(data[i + 1]);
+        if (i > 0 && i != lastIndex && typeOfMsg(data[page][i]) == "you-message") {
+            let typeBefore = typeOfMsg(data[page][i - 1]);
+            let typeAfter = typeOfMsg(data[page][i + 1]);
 
             let type =
                 (typeBefore != "you-message" && typeAfter == "you-message") ? "you-message start" :
@@ -151,7 +151,7 @@ function genMsg() {
             div = div.split(`<div class="message-row you-message">`).join(`<div class="message-row ${type}">`);
         }
 
-        let dateDiv = createDateMsg(data[i]);
+        let dateDiv = createDateMsg(data[page][i]);
         if (dateDiv)
             msg_con_html += dateDiv;
 
@@ -160,18 +160,83 @@ function genMsg() {
     messageContainer.innerHTML = msg_con_html;
 }
 
+let page = 0;
+let totalPages;
+
 const messageContainer = document.querySelector("#messages");
 const loader = document.querySelector("#loader");
+
+const back_arrow = document.querySelector("#arrow-back");
+const forward_arrow = document.querySelector("#arrow-forward");
+const pageNumber = document.querySelector(".chat_head .pages>p");
+
+const options = document.querySelector("#options");
+const options_menu = document.querySelector(".options_menu");
+
+const goFPage = options_menu.children[0].children[0];
+const goLPage = options_menu.children[0].children[1];
+
+back_arrow.addEventListener("click", () => {
+    if (page > 0)
+        page--;
+    loadPage();
+});
+forward_arrow.addEventListener("click", () => {
+    if (page < totalPages - 1)
+        page++;
+    loadPage();
+});
+options.addEventListener("click", () => {
+    options.style.pointerEvents = "none";
+    options_menu.classList.toggle("hide");
+    setTimeout(() => options.style.pointerEvents = "auto", 300);
+})
+goFPage.addEventListener("click", () => {
+    options.dispatchEvent(new Event("click"));
+    if (page != 0) {
+        page = 0;
+        loadPage();
+    }
+});
+goLPage.addEventListener("click", () => {
+    options.dispatchEvent(new Event("click"));
+    if (page != totalPages - 1) {
+        page = totalPages - 1;
+        loadPage();
+    }
+});
+document.addEventListener("click", (e) => {
+    if (!options_menu.contains(e.target) && e.target != options && e.target != options.children[0])
+        options_menu.classList.add("hide");
+});
 
 function loadPage() {
     (() => {
         loader.style.display = "block";
         messageContainer.style.display = "none";
+
+        // If first page disabled back_arrow.
+        back_arrow.className.baseVal = (page == 0) ? "disabled" : "";
+
+        // If last page disabled forward_arrow.
+        forward_arrow.className.baseVal = (page == totalPages - 1) ? "disabled" : "";
+
+        // Stop people from clicking on arrows when page is loading.
+        back_arrow.style.pointerEvents = "none";
+        forward_arrow.style.pointerEvents = "none";
+
         setTimeout(genMsg, 10);
     })();
     setTimeout(() => {
         loader.style.display = "none";
         messageContainer.style.display = "block";
+        pageNumber.innerText = `Page: ${page+1}/${totalPages}`;
+
+        // If first page disabled back_arrow.
+        back_arrow.style.pointerEvents = (page == 0) ? "none" : "auto";
+
+        // If last page disabled forward_arrow.
+        forward_arrow.style.pointerEvents = (page == totalPages - 1) ? "" : "auto";
     }, 10);
 }
 
@@ -179,5 +244,11 @@ genHeader();
 getData().then((res) => {
     data = res;
     totalPages = data.length;
+    if (totalPages !== 1) {
+        back_arrow.style.display = "block";
+        forward_arrow.style.display = "block";
+        pageNumber.style.display = "block";
+        options.style.display = "block";
+    }
     loadPage();
 })
