@@ -67,19 +67,17 @@ function getDate(date) {
 // Gets time in format "xx:xx am/pm".
 const getTime = (date) => moment(date).format("LT").toLowerCase();
 
+const createLink = (href, innerHTML) => `<a href="${href}" target="_blank">${innerHTML}</a>`;
+const createElt = (name, className, innerHTML) => `<${name} class="${className}">${innerHTML}</${name}>`;
+
 // Creates message-row div.
 function createMsg(msgObj) {
     let type = typeOfMsg(msgObj);
 
-    // parent > message-row > message-text
-    let div = document.createElement("div"); // Creates a message-row container.
-    div.className = `message-row ${type}`;
-
-    let msgText = document.createElement("div"); // Creates a message-text container.
-    msgText.className = "message-text";
+    let msgText_innerHTML = "";
 
     if (type.includes("system")) {
-        msgText.innerText = msgObj["message"];
+        msgText_innerHTML = msgObj["message"];
     } else {
         let msg = msgObj["message"].trim();
 
@@ -88,44 +86,33 @@ function createMsg(msgObj) {
          *  message-text > (author, container)
          *  container > (text, time)
          */
-        let text = document.createElement("p");
-        let time = document.createElement("p");
-        let author = document.createElement("p");
-        let container = document.createElement("div");
+        let time = createElt("p", "time", getTime(msgObj["date"]));
+        let author_innerText = (groupChat && type.includes("other")) ? msgObj["author"].trim() : "";
+        let author = createElt("p", "author", author_innerText);
 
-        text.className = "text";
-        time.className = "time";
-        author.className = "author";
-        container.className = "container";
-
-        time.innerText = getTime(msgObj["date"]);
-
-        if (groupChat && type.includes("other"))
-            author.innerText = msgObj["author"].trim();
+        let text_innerHTML = "";
 
         // If msg is valid url create <a> tag for it.
         if (validURL(msg)) {
-            let a = document.createElement("a");
             // Checks if the URL starts with https if not add it.
-            a.href = (msg.match(/(^https?:\/\/)/g)) ? msg : `https://${msg}`;
-            a.target = "_blank";
-            a.innerText = msg;
-            text.appendChild(a);
+            let a_href = (msg.match(/(^https?:\/\/)/g)) ? msg : `https://${msg}`;
+            text_innerHTML = createLink(a_href, msg);
         } else {
             // if <Media omitted> then we don't emojione it.
             if (msg == "<Media omitted>") {
-                text.innerText = msg;
+                text_innerHTML = "&lt;Media omitted&gt;";
             } else {
-                text.innerHTML = emojione.toImage(msg);
+                text_innerHTML = emojione.toImage(msg);
             }
         }
-
-        container.append(text, time);
-        msgText.append(author, container);
+        let text = createElt("p", "text", text_innerHTML);
+        let container = createElt("div", "container", `${text}\n${time}`);
+        msgText_innerHTML = `${author}\n${container}`;
     }
 
-    div.appendChild(msgText);
-    return div;
+    // parent > message-row > message-text
+    let msgText = createElt("div", "message-text", msgText_innerHTML); // Creates a message-text container.
+    return createElt("div", `message-row ${type}`, msgText); // Creates a message-row container.
 }
 
 // Creates a date message-row.
@@ -133,36 +120,27 @@ function createDateMsg(msgObj) {
     // If date changes add a date message row.
     nextDate = getDate(msgObj["date"]);
     if (currentDate != nextDate) {
-        let dateDiv = document.createElement("div");
-        dateDiv.className = "message-row system-message date";
-
-        let dateText = document.createElement("div");
-        dateText.className = "message-text";
-
-        dateText.innerText = nextDate;
+        let dateText = createElt("div", "message-text", nextDate);
+        let dateDiv = createElt("div", "message-row system-message date", dateText);
         currentDate = nextDate;
-
-        dateDiv.appendChild(dateText);
         return dateDiv;
     }
     return null;
 }
 
-let page = 0;
-let totalPages;
-
 function genMsg() {
     currentDate = nextDate = "";
-    let lastIndex = data[page].length - 1;
+    let lastIndex = data.length - 1;
     messageContainer.innerHTML = "";
+    msg_con_html = ""
     for (let i = 0; i <= lastIndex; i++) {
         // Creates message-row div.
-        let div = createMsg(data[page][i]);
+        let div = createMsg(data[i]);
 
         // Sets style for you-message div.
-        if (i > 0 && i != lastIndex && typeOfMsg(data[page][i]) == "you-message") {
-            let typeBefore = typeOfMsg(data[page][i - 1]);
-            let typeAfter = typeOfMsg(data[page][i + 1]);
+        if (i > 0 && i != lastIndex && typeOfMsg(data[i]) == "you-message") {
+            let typeBefore = typeOfMsg(data[i - 1]);
+            let typeAfter = typeOfMsg(data[i + 1]);
 
             let type =
                 (typeBefore != "you-message" && typeAfter == "you-message") ? "you-message start" :
@@ -170,15 +148,16 @@ function genMsg() {
                 (typeBefore == "you-message" && typeAfter != "you-message") ? "you-message last" :
                 "you-message";
 
-            div.className = `message-row ${type}`;
+            div = div.split(`<div class="message-row you-message">`).join(`<div class="message-row ${type}">`);
         }
 
-        let dateDiv = createDateMsg(data[page][i]);
+        let dateDiv = createDateMsg(data[i]);
         if (dateDiv)
-            messageContainer.appendChild(dateDiv);
+            msg_con_html += dateDiv;
 
-        messageContainer.appendChild(div);
+        msg_con_html += div;
     }
+    messageContainer.innerHTML = msg_con_html;
 }
 
 const messageContainer = document.querySelector("#messages");
@@ -188,12 +167,12 @@ function loadPage() {
     (() => {
         loader.style.display = "block";
         messageContainer.style.display = "none";
-        setTimeout(genMsg, 50);
+        setTimeout(genMsg, 10);
     })();
     setTimeout(() => {
         loader.style.display = "none";
         messageContainer.style.display = "block";
-    }, 50);
+    }, 10);
 }
 
 genHeader();
