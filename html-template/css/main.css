@@ -36,6 +36,7 @@ body {
     font-size: 2rem;
     overflow: hidden !important;
     text-overflow: ellipsis;
+    color: #000000;
 }
 
 .chat_head {
@@ -305,4 +306,5 @@ body {
 .chat_head .pages>p {
     display: none;
     margin-bottom: 0;
+    color: #000000;
 }
