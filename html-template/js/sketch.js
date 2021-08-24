@@ -78,6 +78,9 @@ function createMsg(msgObj) {
         let author_innerText = (groupChat && type.includes("other")) ? msgObj["author"].trim() : "";
         let author = createElt("p", "author", author_innerText);
 
+        if (type == "other-message")
+            author = author.split(`<p class="author">`).join(`<p class="author" style="color: ${colorDict[msgObj["author"]]};">`);
+
         let text_innerHTML = "";
 
         // If msg is valid url create <a> tag for it.
