@@ -21,7 +21,6 @@ $ yarn global add wa-export
 <br>
 <img src="./assets/export-chat.png" alt="export-chat" width="480">
 <br>
-<br>
 
 You'll get a  text file called "WhatsApp Chat with XXXX.txt"
 
@@ -36,7 +35,6 @@ $ wa-export path/to/file/"WhatsApp Chat with XXXX.txt" path/to/output/directory/
 <br>
 <img src="./assets/terminal.png" alt="terminal">
 <br>
-<br>
 
 And you are done! You have generated the chat's html file.
 
@@ -47,7 +45,6 @@ And you are done! You have generated the chat's html file.
 <br>
 <img src="./assets/other-option.png" alt="other-option">
 <br>
-<br>
 
 ### Step 4: View the html file
 
@@ -56,7 +53,6 @@ And you are done! You have generated the chat's html file.
 
 <br>
 <img src="./assets/chat.png" alt="chat" width="480">
-<br>
 <br>
 
 ## Uninstall
