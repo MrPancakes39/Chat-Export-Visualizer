@@ -6,7 +6,8 @@ const path = require("path");
 
 const parseWAChat = require("./parseWAChat");
 const getUserValues = require("./getUserValues");
-const genOutFile = require("./genOutFile")
+const genColorNames = require("./genColorNames");
+const genOutFile = require("./genOutFile");
 
 function smallError(msg) {
     let err = new Error(msg);
@@ -48,6 +49,7 @@ export async function cli(args) {
 
     const [json_data, names] = await parseWAChat(waFile);
     const userVals = await getUserValues(names);
+    const colorNames = await genColorNames(names);
 
     if (!userVals.hasOwnProperty("chatTitle") || !userVals.hasOwnProperty("groupChat") || !userVals.hasOwnProperty("yourself")) {
         throw smallError("One or more of the prompts have missing input(s)");
@@ -55,9 +57,9 @@ export async function cli(args) {
 
     let outPath;
     try {
-        outPath = await genOutFile(dirPath, json_data, userVals);
+        outPath = await genOutFile(dirPath, json_data, userVals, colorNames);
     } catch (err) {
-        throw smallError("Couldn't generate html file");
+        throw new Error("Couldn't generate html file");
     }
 
     console.log(`Done.\nGenerated file: ${outPath}.`);

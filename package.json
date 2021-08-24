@@ -14,8 +14,14 @@
   },
   "keywords": [
     "cli",
-    "wa-export"
+    "chat",
+    "conversation",
+    "visualizer",
+    "wa-export",
+    "whatsapp"
   ],
+  "homepage": "https://github.com/MrPancakes39/Chat-Export-Visualizer/",
+  "repository": "MrPancakes39/Chat-Export-Visualizer",
   "author": "Salman Hasan <salmannhassan39@gmail.com>",
   "license": "MIT",
   "private": false,
